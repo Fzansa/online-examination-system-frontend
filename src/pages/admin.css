@@ -1,0 +1,19 @@
+.adminLayout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.adminLeftSide {
+  width: 250px;
+  background-color: brown;
+  height: 100vh;
+}
+
+.adminRightSide {
+  width: calc(100% - 250px);
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
+}

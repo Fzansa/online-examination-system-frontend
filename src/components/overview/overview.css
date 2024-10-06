@@ -1,0 +1,16 @@
+.stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  margin-top: 50px;
+}
+
+.stats > div {
+  width:160px;
+  box-shadow: 3px 3px 17px lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:60px 50px;
+  border-radius: 12px;
+}
