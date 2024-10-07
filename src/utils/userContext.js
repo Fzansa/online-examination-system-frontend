@@ -31,6 +31,27 @@ export const useFetchQuiz = () => {
     return { data, error };
 };
 
+export const useFetchSingleQuiz = (id) => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+   
+
+    useEffect(() => {
+        async function fetchQuiz() {
+            try {
+                let response = await axios.post(`${base_url}/user/getSingleQuizz`,{id});
+                setData(response?.data);
+            } catch (error) {
+                console.error("Error fetching quiz:", error);
+                setError(error);
+            }
+        }
+        fetchQuiz();
+    }, [id]);
+
+    return { data, error };
+};
+
 
 // Create the provider component
 export const UserProvider = ({ children }) => {

@@ -1,0 +1,20 @@
+.quizzContainer .quizzBox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px auto;
+}
+
+.quizzBox h5{
+    font-size: 16px;
+    margin: 0;
+}
+
+.qDesc{
+    font-size: 14px;
+    margin-right: 12px;
+}
+
+.qPlay{
+    cursor: pointer;
+}
