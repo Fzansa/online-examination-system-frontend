@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { base_url } from './constants';
+import axios from 'axios';
 
 // Create the context
 export const UserContext = createContext();
@@ -7,6 +9,28 @@ export const UserContext = createContext();
 export const useUserContext = () => {
     return useContext(UserContext);
 };
+
+export const useFetchQuiz = () => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    async function fetchQuiz() {
+        try {
+            let response = await axios.get(`${base_url}/user/getQuizz`);
+            setData(response?.data);
+            console.log("Fetched quiz data:", response.data);
+        } catch (error) {
+            console.error("Error fetching quiz:", error);
+            setError(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchQuiz();
+    }, []);
+
+    return { data, error };
+};
+
 
 // Create the provider component
 export const UserProvider = ({ children }) => {
@@ -22,7 +46,7 @@ export const UserProvider = ({ children }) => {
                 console.error("Failed to decode token:", error);
             }
         }
-    }, []); // Only runs once when the provider mounts
+    }, []);
 
     const login = (token) => {
         try {
@@ -42,7 +66,7 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ loggedInUser, login, logout,setLoggedInUser }}>
+        <UserContext.Provider value={{ loggedInUser, login, logout, setLoggedInUser }}>
             {children}
         </UserContext.Provider>
     );

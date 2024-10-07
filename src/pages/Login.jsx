@@ -49,7 +49,6 @@ const Login = () => {
   // Prevent access to login page if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log('Token on refresh:', token); // Log token on refresh
     if (token) {
       navigate("/"); 
     }

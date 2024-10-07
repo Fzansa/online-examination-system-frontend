@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Questions from "../questionForm/QuestionForm"; // Import Questions component
+import axios from "axios";
+import { base_url } from "../../utils/constants";
 
 const QuizForm = () => {
+  const [errorMesaage, setErrorMessage] = useState(null);
   const [quiz, setQuiz] = useState({
     title: "",
     description: "",
@@ -13,9 +16,9 @@ const QuizForm = () => {
         type: "multiple-choice",
         options: [],
         correctOptionId: "",
-        marks: ""
-      }
-    ]
+        marks: "",
+      },
+    ],
   });
 
   const handleInputChange = (e) => {
@@ -33,15 +36,47 @@ const QuizForm = () => {
           type: "multiple-choice",
           options: [],
           correctOptionId: "",
-          marks: ""
-        }
-      ]
+          marks: "",
+        },
+      ],
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Quiz Data:", quiz); // Log the final quiz object
+    try {
+      let response = await axios.post(base_url + "/admin/addQuizz", {
+        ...quiz,
+      });
+      if (response.status === 201) {
+        setQuiz({
+          title: "",
+          description: "",
+          duration: "",
+          totalMarks: "",
+          questions: [
+            {
+              text: "",
+              type: "multiple-choice",
+              options: [],
+              correctOptionId: "",
+              marks: "",
+            },
+          ],
+        });
+        setErrorMessage(null);
+      }
+    } catch (error) {
+      if (error?.response?.data?.message?.includes('E11000')) {
+        // This code refers to duplicate key error in MongoDB
+        setErrorMessage(
+          "A quiz with this title already exists. Please choose a different title."
+        );
+      } else {
+        setErrorMessage("An unexpected error occurred. Please try again.");
+      }
+      console.error("Error logging in:", error.response.data.message);
+    }
   };
 
   return (
@@ -94,18 +129,13 @@ const QuizForm = () => {
         <button type="button" onClick={handleAddQuestion}>
           Add Question
         </button>
+        {errorMesaage && (
+          <p style={{ color: "red", fontSize: "14px", fontWeight: "bold" }}>
+            {errorMesaage}
+          </p>
+        )}
         <button type="submit">Submit Quiz</button>
       </form>
-
-      {/* Display the added questions */}
-      <h4>Questions List</h4>
-      {quiz.questions.length > 0 && (
-        <ul>
-          {quiz.questions.map((question, index) => (
-            <li key={index}>{question.text}</li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };

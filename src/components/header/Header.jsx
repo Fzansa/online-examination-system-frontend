@@ -1,13 +1,13 @@
 import React from "react";
 import { useUserContext } from "../../utils/userContext";
-import './header.css'
+import "./header.css";
 
 const Header = () => {
-  const { logout } = useUserContext();
+  const { logout, loggedInUser } = useUserContext();
   return (
     <div className="header">
       <div className="userTitle">
-        <h1>Welcome, Admin</h1>
+        <h1>Welcome, {loggedInUser?.name}</h1>
       </div>
       <div className="logOutBtn">
         <button onClick={logout}>Logout</button>
